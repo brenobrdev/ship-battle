@@ -40,4 +40,8 @@ public class Cell implements Displayable {
     public void setType(CellType type) {
         this.type = type;
     }
+
+    public boolean isEmpty() {
+        return this.type == CellType.EMPTY || this.type == CellType.FOG;
+    }
 }
