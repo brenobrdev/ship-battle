@@ -5,7 +5,9 @@ import Interfaces.Displayable;
 
 public class Cell implements Displayable {
     private final Vector2 position;
-    private CellType type = CellType.FOG;
+
+    private CellType type = CellType.EMPTY;
+    private boolean isRevealed = false;
 
     public Cell(int x, int y) {
         this.position = new Vector2(x, y);
@@ -19,6 +21,11 @@ public class Cell implements Displayable {
             suffix = "\n";
         else
             suffix = " ";
+
+        if (!isRevealed) {
+            System.out.print("." + suffix);
+            return;
+        }
 
         if (position.getX() == 0) {
             System.out.print(position.getY() + suffix);
@@ -42,6 +49,10 @@ public class Cell implements Displayable {
     }
 
     public boolean isEmpty() {
-        return this.type == CellType.EMPTY || this.type == CellType.FOG;
+        return this.type == CellType.EMPTY;
+    }
+
+    public void reveal() {
+        isRevealed = true;
     }
 }

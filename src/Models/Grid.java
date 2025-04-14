@@ -30,7 +30,10 @@ public class Grid implements Displayable {
     private void populateCells() {
         for (int row = 0; row < Constants.GRID_AREA; row++) {
             for (int column = 0; column < Constants.GRID_AREA; column++) {
-                cells[row][column] = new Cell(row, column);
+                Cell cell = new Cell(row, column);
+                if (row == 0 || column == 0)
+                    cell.reveal(); // Reveals the cell if it's a header
+                cells[row][column] = cell;
             }
         }
     }

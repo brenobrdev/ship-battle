@@ -4,8 +4,7 @@ public enum CellType {
     WATER('~'),
     LOOT('L'),
     SHIP('O'),
-    EMPTY(' '),
-    FOG('.');
+    EMPTY(' ');
 
     private final char displayCharacter;
 
