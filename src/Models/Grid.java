@@ -88,24 +88,18 @@ public class Grid implements Displayable {
         switch (target.getType()) {
             case EMPTY -> System.out.println("Water...");
             case LOOT -> System.out.println("You got loot!");
-            case SHIP -> {
-                for (Ship ship : ships) {
-                    if (ship.checkHit(target.getPosition())) {
-                        System.out.println("+10 points");
-
-                        if (!ship.isAlive()) {
-                            shipDestroyed = ship;
-                            System.out.println("You destroyed a ship! Only " + (ships.size() - 1) + " remaining!");
-                            System.out.println("+50 points");
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-
-        if (shipDestroyed != null) {
-            ships.remove(shipDestroyed);
+            case SHIP -> ships.stream()
+                                .filter(ship -> ship.checkHit(target.getPosition()))
+                                .findFirst()
+                                .ifPresent(ship -> {
+                                    if (!ship.isAlive()) {
+                                        ships.remove(ship);
+                                        System.out.println("You destroyed a ship! Only " + (ships.size()) + " remaining!");
+                                        System.out.println("+50 points");
+                                    } else {
+                                        System.out.println("+10 points");
+                                    }
+                                });
         }
     }
 }
