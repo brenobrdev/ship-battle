@@ -5,10 +5,12 @@ import Interfaces.Displayable;
 import Utilities.Constants;
 import Utilities.Randomizer;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Grid implements Displayable {
     private final Cell[][] cells = new Cell[Constants.GRID_AREA][Constants.GRID_AREA];
+    private final List<Ship> ships = new ArrayList<>();
 
     public Grid() {
         populateCells();
@@ -31,6 +33,7 @@ public class Grid implements Displayable {
         for (int row = 0; row < Constants.GRID_AREA; row++) {
             for (int column = 0; column < Constants.GRID_AREA; column++) {
                 Cell cell = new Cell(row, column);
+                cell.reveal();
                 if (row == 0 || column == 0)
                     cell.reveal(); // Reveals the cell if it's a header
                 cells[row][column] = cell;
@@ -48,6 +51,10 @@ public class Grid implements Displayable {
 
     public Cell getCell(Vector2 coordinates) {
         return getCell(coordinates.getX(), coordinates.getY());
+    }
+
+    public boolean hasShipsAlive() {
+        return !ships.isEmpty();
     }
 
     public void createShip() {
@@ -69,6 +76,36 @@ public class Grid implements Displayable {
                 Cell freeCell = getCell(coordinate);
                 cells[freeCell.getPosition().getX()][freeCell.getPosition().getY()].setType(CellType.SHIP);
             }
+
+            ships.add(new Ship(randomCoordinates));
+        }
+    }
+
+    public void checkHit(Cell target) {
+        target.reveal();
+        Ship shipDestroyed = null;
+
+        switch (target.getType()) {
+            case EMPTY -> System.out.println("Water...");
+            case LOOT -> System.out.println("You got loot!");
+            case SHIP -> {
+                for (Ship ship : ships) {
+                    if (ship.checkHit(target.getPosition())) {
+                        System.out.println("+10 points");
+
+                        if (!ship.isAlive()) {
+                            shipDestroyed = ship;
+                            System.out.println("You destroyed a ship! Only " + (ships.size() - 1) + " remaining!");
+                            System.out.println("+50 points");
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        if (shipDestroyed != null) {
+            ships.remove(shipDestroyed);
         }
     }
 }

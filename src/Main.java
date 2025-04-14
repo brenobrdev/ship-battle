@@ -11,7 +11,7 @@ public class Main {
         Scanner input = new Scanner(System.in);
         Cell selectedCell = null;
 
-        while (true) {
+        while (grid.hasShipsAlive()) {
             System.out.println("Score: " + 100 + "   Bullets: " + 200);
 
             grid.display();
@@ -30,17 +30,7 @@ public class Main {
                 continue;
             }
 
-            manageShot(selectedCell);
-        }
-    }
-
-    public static void manageShot(Cell target) {
-        target.reveal();
-
-        switch (target.getType()) {
-            case EMPTY -> System.out.println("Water...");
-            case LOOT -> System.out.println("You got loot!");
-            case SHIP -> System.out.println("You hit a ship!");
+            grid.checkHit(selectedCell);
         }
     }
 }

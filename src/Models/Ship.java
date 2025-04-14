@@ -1,21 +1,21 @@
 package Models;
 
+import java.util.List;
+import java.util.Set;
+import java.util.HashSet;
+
 public class Ship {
-    private final int MAX_LENGTH = 4;
+    private final Set<Vector2> coordinates = new HashSet<>();
 
-    private int[] startingCoordinate = new int[2];
-    private int length = 2;
-    private boolean isHorizontal = false;
-
-    private Ship() {
-
+    public Ship(List<Vector2> coordinates) {
+        this.coordinates.addAll(coordinates);
     }
 
-    public static Ship createShip() {
-        return new Ship();
+    public boolean checkHit(Vector2 coordinate) {
+        return coordinates.remove(coordinate);
     }
 
-    private int getShipLength() {
-        return (int) Math.floor(Math.random() * (MAX_LENGTH + 1));
+    public boolean isAlive() {
+        return !coordinates.isEmpty();
     }
 }
