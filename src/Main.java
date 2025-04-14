@@ -30,7 +30,17 @@ public class Main {
                 continue;
             }
 
-            selectedCell.reveal();
+            manageShot(selectedCell);
+        }
+    }
+
+    public static void manageShot(Cell target) {
+        target.reveal();
+
+        switch (target.getType()) {
+            case EMPTY -> System.out.println("Water...");
+            case LOOT -> System.out.println("You got loot!");
+            case SHIP -> System.out.println("You hit a ship!");
         }
     }
 }

@@ -1,7 +1,6 @@
 package Enumerations;
 
 public enum CellType {
-    WATER('~'),
     LOOT('L'),
     SHIP('O'),
     EMPTY(' ');
