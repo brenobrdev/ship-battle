@@ -13,9 +13,9 @@ public class Randomizer {
         List<Vector2> randomConsecutiveCoordinates = new ArrayList<>();
         boolean isHorizontal = getRandomBoolean();
 
-        int initialCoordinateMax = Constants.GRID_AREA - count;
-        int initialCoordinate = random.nextInt(initialCoordinateMax - 1) + 1; // -1 and +1 to avoid coordinates for grid headers.
-        int perpendicularCoordinate = random.nextInt(Constants.GRID_AREA - 1) + 1;  // -1 and +1 to avoid coordinates for grid headers.
+        int initialCoordinateMax = (Constants.GRID_AREA - 1) - count;
+        int initialCoordinate = getRandomIntBetween(1, initialCoordinateMax);
+        int perpendicularCoordinate = getRandomIntBetween(1, (Constants.GRID_AREA - 1));
 
         for (int i = initialCoordinate; i < initialCoordinate + count; i++) {
             if (isHorizontal)
@@ -28,10 +28,20 @@ public class Randomizer {
     }
 
     public static int getRandomShipLength() {
-        return random.nextInt((Constants.MAX_SHIP_LENGTH + 1) - Constants.MIN_SHIP_LENGTH) + Constants.MIN_SHIP_LENGTH;
+        return getRandomIntBetween(Constants.MIN_SHIP_LENGTH, Constants.MAX_SHIP_LENGTH);
     }
 
     public static boolean getRandomBoolean() {
         return random.nextBoolean();
+    }
+
+    public static Vector2 getRandomCoordinates() {
+        int x = random.nextInt(Constants.GRID_AREA - 1) + 1;
+        int y = random.nextInt(Constants.GRID_AREA - 1) + 1;
+        return new Vector2(x, y);
+    }
+
+    public static int getRandomIntBetween(int min, int max) {
+        return random.nextInt(max - min + 1) + min;
     }
 }

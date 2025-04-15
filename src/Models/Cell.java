@@ -2,6 +2,7 @@ package Models;
 
 import Enumerations.CellType;
 import Interfaces.Displayable;
+import Interfaces.Consumable;
 import Utilities.Constants;
 
 public class Cell implements Displayable {
@@ -15,6 +16,7 @@ public class Cell implements Displayable {
 
     private CellType type = CellType.EMPTY;
     private boolean isRevealed = false;
+    private Consumable content;
 
     public Cell(int x, int y) {
         this.position = new Vector2(x, y);
@@ -35,7 +37,7 @@ public class Cell implements Displayable {
             suffix = "\n";
 
         if (!isRevealed) {
-            System.out.print(PREFIX + "-" + suffix);
+            System.out.print(PREFIX + "." + suffix);
             return;
         }
 
@@ -66,5 +68,16 @@ public class Cell implements Displayable {
 
     public void reveal() {
         isRevealed = true;
+    }
+
+    public void setContent(Consumable content) {
+        this.content = content;
+    }
+
+    public void processHit(GameManager gm) {
+        if (content != null) {
+            content.consume(gm);
+            content = null;
+        }
     }
 }

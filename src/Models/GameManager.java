@@ -26,6 +26,10 @@ public class GameManager {
         bullets--;
     }
 
+    public void addBullets(int amount) {
+        bullets += amount;
+    }
+
     public Grid getGrid() {
         return grid;
     }

@@ -3,7 +3,7 @@ package Enumerations;
 public enum CellType {
     LOOT('L'),
     SHIP('O'),
-    EMPTY(' ');
+    EMPTY('~');
 
     private final char displayCharacter;
 

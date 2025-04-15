@@ -1,6 +1,7 @@
 package Models;
 
 import Enumerations.CellType;
+import Enumerations.LootType;
 import Interfaces.Displayable;
 import Utilities.Constants;
 import Utilities.Randomizer;
@@ -19,6 +20,7 @@ public class Grid implements Displayable {
         createShip();
         createShip();
         createShip();
+        createLoot(3);
         this.gm = gm;
     }
 
@@ -59,6 +61,14 @@ public class Grid implements Displayable {
         return !ships.isEmpty();
     }
 
+    public void createLoot(int count) {
+        for (int i = 0; i < count; i++) {
+            Cell cell = getEmptyCell();
+            cell.setType(CellType.LOOT);
+            cell.setContent(new Loot(LootType.getRandom()));
+        }
+    }
+
     public void createShip() {
         int length = Randomizer.getRandomShipLength();
         List<Vector2> randomCoordinates = Randomizer.getRandomConsecutiveCellCoordinates(length);
@@ -89,7 +99,7 @@ public class Grid implements Displayable {
 
         switch (target.getType()) {
             case EMPTY -> gm.setCurrentMessage("Water...");
-            case LOOT -> gm.setCurrentMessage("You got loot!");
+            case LOOT -> target.processHit(gm);
             case SHIP -> ships.stream()
                                 .filter(ship -> ship.checkHit(target.getPosition()))
                                 .findFirst()
@@ -103,6 +113,15 @@ public class Grid implements Displayable {
                                         gm.addScore(10);
                                     }
                                 });
+        }
+    }
+
+    public Cell getEmptyCell() {
+        while (true) {
+            Cell potentialCell = getCell(Randomizer.getRandomCoordinates());
+            if (potentialCell.isEmpty()) {
+                return potentialCell;
+            }
         }
     }
 }

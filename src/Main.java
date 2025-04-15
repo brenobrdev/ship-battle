@@ -34,6 +34,9 @@ public class Main {
             }
 
             gm.getGrid().checkHit(selectedCell);
+            if (!gm.getGrid().hasShipsAlive()) {
+                gm.startNewGrid();
+            }
         }
 
         System.out.println("Game over. You scored " + gm.getScore() + " points.");
