@@ -11,13 +11,15 @@ import java.util.List;
 public class Grid implements Displayable {
     private final Cell[][] cells = new Cell[Constants.GRID_AREA][Constants.GRID_AREA];
     private final List<Ship> ships = new ArrayList<>();
+    private final GameManager gm;
 
-    public Grid() {
+    public Grid(GameManager gm) {
         populateCells();
         createShip();
         createShip();
         createShip();
         createShip();
+        this.gm = gm;
     }
 
     @Override
@@ -83,7 +85,6 @@ public class Grid implements Displayable {
 
     public void checkHit(Cell target) {
         target.reveal();
-        Ship shipDestroyed = null;
 
         switch (target.getType()) {
             case EMPTY -> System.out.println("Water...");
@@ -96,8 +97,10 @@ public class Grid implements Displayable {
                                         ships.remove(ship);
                                         System.out.println("You destroyed a ship! Only " + (ships.size()) + " remaining!");
                                         System.out.println("+50 points");
+                                        gm.addScore(50);
                                     } else {
                                         System.out.println("+10 points");
+                                        gm.addScore(10);
                                     }
                                 });
         }

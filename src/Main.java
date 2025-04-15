@@ -1,5 +1,5 @@
 import Models.Cell;
-import Models.Grid;
+import Models.GameManager;
 import Models.Vector2;
 import Utilities.Input;
 
@@ -7,30 +7,32 @@ import java.util.Scanner;
 
 public class Main {
     public static void main (String[] args) {
-        Grid grid = new Grid();
+        GameManager gm = new GameManager();
         Scanner input = new Scanner(System.in);
         Cell selectedCell = null;
+        Input.clearScreen();
 
-        while (grid.hasShipsAlive()) {
-            System.out.println("Score: " + 100 + "   Bullets: " + 200);
+        while (gm.getGrid().hasShipsAlive()) {
+            System.out.println("Score: " + gm.getScore() + "   Bullets: " + gm.getBullets());
 
-            grid.display();
+            gm.getGrid().display();
 
             System.out.println("Pick a cell to shoot:");
 
             Vector2 coordinates = Input.parse(input.next().trim().toUpperCase());
+            Input.clearScreen();
             if (coordinates == null) {
                 System.out.println("Please enter coordinates in the format: A1.");
                 continue;
             }
 
-            selectedCell = grid.getCell(coordinates);
+            selectedCell = gm.getGrid().getCell(coordinates);
             if (selectedCell == null) {
                 System.out.println("Please enter coordinates for a valid cell (between A1 and J10).");
                 continue;
             }
 
-            grid.checkHit(selectedCell);
+            gm.getGrid().checkHit(selectedCell);
         }
     }
 }

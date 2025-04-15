@@ -23,4 +23,17 @@ public class Input {
             return null;
         }
     }
+
+    public static void clearScreen() {
+        String osName = System.getProperty("os.name").toUpperCase();
+        System.out.println(osName);
+        String clearCommand = (osName.contains("WINDOWS")) ? "cls" : "clear";
+        ProcessBuilder processBuilder = new ProcessBuilder(clearCommand);
+
+        try {
+            processBuilder.inheritIO().start().waitFor();
+        } catch (Exception e) {
+            System.out.println("Unable to clear screen.");
+        }
+    }
 }
