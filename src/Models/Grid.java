@@ -88,19 +88,18 @@ public class Grid implements Displayable {
         gm.useBullet();
 
         switch (target.getType()) {
-            case EMPTY -> System.out.println("Water...");
-            case LOOT -> System.out.println("You got loot!");
+            case EMPTY -> gm.setCurrentMessage("Water...");
+            case LOOT -> gm.setCurrentMessage("You got loot!");
             case SHIP -> ships.stream()
                                 .filter(ship -> ship.checkHit(target.getPosition()))
                                 .findFirst()
                                 .ifPresent(ship -> {
                                     if (!ship.isAlive()) {
                                         ships.remove(ship);
-                                        System.out.println("You destroyed a ship! Only " + (ships.size()) + " remaining!");
-                                        System.out.println("+50 points");
+                                        gm.setCurrentMessage("You destroyed a ship! Only " + (ships.size()) + " remaining!\n+50 points");
                                         gm.addScore(50);
                                     } else {
-                                        System.out.println("+10 points");
+                                        gm.setCurrentMessage("+10 points");
                                         gm.addScore(10);
                                     }
                                 });

@@ -17,18 +17,19 @@ public class Main {
 
             gm.getGrid().display();
 
+            System.out.println(gm.getCurrentMessage());
             System.out.println("Pick a cell to shoot:");
 
             Vector2 coordinates = Input.parse(input.next().trim().toUpperCase());
             Input.clearScreen();
             if (coordinates == null) {
-                System.out.println("Please enter coordinates in the format: A1.");
+                gm.setCurrentMessage("Please enter coordinates in the format \"A1\".");
                 continue;
             }
 
             selectedCell = gm.getGrid().getCell(coordinates);
             if (selectedCell == null) {
-                System.out.println("Please enter coordinates for a valid cell (between A1 and J10).");
+                gm.setCurrentMessage("Please enter coordinates for a valid cell.");
                 continue;
             }
 

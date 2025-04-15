@@ -4,6 +4,7 @@ public class GameManager {
     private int score;
     private int bullets = 3;
     private Grid grid;
+    private String currentMessage = "";
 
     public GameManager() {
         startNewGrid();
@@ -31,5 +32,13 @@ public class GameManager {
 
     public void startNewGrid() {
         this.grid = new Grid(this);
+    }
+
+    public String getCurrentMessage() {
+        return currentMessage;
+    }
+
+    public void setCurrentMessage(String currentMessage) {
+        this.currentMessage = currentMessage;
     }
 }
