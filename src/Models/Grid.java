@@ -16,8 +16,8 @@ public class Grid implements Displayable {
 
     public Grid() {
         populateCells();
-        createShip(4);
-        createLoot(3);
+        createShip(Randomizer.getRandomIntBetween(2, 4));
+        createLoot(Randomizer.getRandomIntBetween(1, 3));
     }
 
     @Override
