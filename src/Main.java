@@ -12,7 +12,7 @@ public class Main {
         Cell selectedCell = null;
         Input.clearScreen();
 
-        while (gm.getGrid().hasShipsAlive()) {
+        while (gm.getBullets() > 0) {
             System.out.println("Score: " + gm.getScore() + "   Bullets: " + gm.getBullets());
 
             gm.getGrid().display();
@@ -34,5 +34,7 @@ public class Main {
 
             gm.getGrid().checkHit(selectedCell);
         }
+
+        System.out.println("Game over. You scored " + gm.getScore() + " points.");
     }
 }

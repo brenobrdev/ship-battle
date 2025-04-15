@@ -26,7 +26,6 @@ public class Input {
 
     public static void clearScreen() {
         String osName = System.getProperty("os.name").toUpperCase();
-        System.out.println(osName);
         String clearCommand = (osName.contains("WINDOWS")) ? "cls" : "clear";
         ProcessBuilder processBuilder = new ProcessBuilder(clearCommand);
 

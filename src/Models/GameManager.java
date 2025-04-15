@@ -2,7 +2,7 @@ package Models;
 
 public class GameManager {
     private int score;
-    private int bullets;
+    private int bullets = 3;
     private Grid grid;
 
     public GameManager() {
@@ -13,20 +13,16 @@ public class GameManager {
         return score;
     }
 
-    public void setScore(int score) {
-        this.score = score;
-    }
-
     public void addScore(int amount) {
-        this.score += amount;
+        score += amount;
     }
 
     public int getBullets() {
         return bullets;
     }
 
-    public void setBullets(int bullets) {
-        this.bullets = bullets;
+    public void useBullet() {
+        bullets--;
     }
 
     public Grid getGrid() {
