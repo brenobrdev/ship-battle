@@ -49,7 +49,7 @@ public class Grid implements Displayable {
         for (int row = 0; row < Constants.GRID_AREA; row++) {
             for (int column = 0; column < Constants.GRID_AREA; column++) {
                 Cell cell = new Cell(row, column);
-                cell.reveal();
+
                 if (row == 0 || column == 0)
                     cell.reveal(); // Reveals the cell if it's a header
                 cells[row][column] = cell;

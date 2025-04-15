@@ -74,16 +74,16 @@ public class Cell implements Displayable {
         this.content = content;
     }
 
-    public void processHit(GameManager gm) {
+    public void processHit() {
         reveal();
-        gm.useBullet();
+        GameManager.useBullet();
 
         if (content != null) {
-            content.hit(gm);
+            content.hit();
             content = null;
         } else if (getType() == CellType.EMPTY)
-            gm.setCurrentMessage("Water...");
+            GameManager.setCurrentMessage("Water...");
         else
-            gm.setCurrentMessage("This has already been destroyed... now there is only shambles...");
+            GameManager.setCurrentMessage("This has already been destroyed... now there is only shambles...");
     }
 }

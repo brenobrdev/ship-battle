@@ -7,40 +7,40 @@ import java.util.Scanner;
 
 public class Main {
     public static void main (String[] args) {
-        GameManager gm = new GameManager();
+        GameManager.startNewGrid();
         Scanner input = new Scanner(System.in);
         Cell selectedCell;
         Input.clearScreen();
 
-        while (gm.getBullets() > 0) {
-            System.out.println("Score: " + gm.getScore() + "   Bullets: " + gm.getBullets());
+        while (GameManager.getBullets() > 0) {
+            System.out.println("Score: " + GameManager.getScore() + "   Bullets: " + GameManager.getBullets());
 
-            gm.getGrid().display();
+            GameManager.getGrid().display();
 
-            System.out.println(gm.getCurrentMessage());
-            gm.clearCurrentMessage();
+            System.out.println(GameManager.getCurrentMessage());
+            GameManager.clearCurrentMessage();
             System.out.println("Pick a cell to shoot:");
 
             Vector2 coordinates = Input.parse(input.next().trim().toUpperCase());
             Input.clearScreen();
             if (coordinates == null) {
-                gm.setCurrentMessage("Please enter coordinates in the format \"A1\".");
+                GameManager.setCurrentMessage("Please enter coordinates in the format \"A1\".");
                 continue;
             }
 
-            selectedCell = gm.getGrid().getCell(coordinates);
+            selectedCell = GameManager.getGrid().getCell(coordinates);
             if (selectedCell == null) {
-                gm.setCurrentMessage("Please enter coordinates for a valid cell.");
+                GameManager.setCurrentMessage("Please enter coordinates for a valid cell.");
                 continue;
             }
 
-            selectedCell.processHit(gm);
+            selectedCell.processHit();
 
-            if (!gm.getGrid().hasShipsAlive()) {
-                gm.startNewGrid();
+            if (!GameManager.getGrid().hasShipsAlive()) {
+                GameManager.startNewGrid();
             }
         }
 
-        System.out.println("Game over. You scored " + gm.getScore() + " points.");
+        System.out.println("Game over. You scored " + GameManager.getScore() + " points.");
     }
 }

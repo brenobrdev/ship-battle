@@ -11,16 +11,16 @@ public class Loot implements Hittable {
         this.type = type;
     }
 
-    public void hit(GameManager gm) {
+    public void hit() {
         switch (type) {
             case BULLET -> {
                 int numberOfBullets = Randomizer.getRandomIntBetween(3, 8);
-                gm.addBullets(numberOfBullets);
-                gm.setCurrentMessage("You got " + numberOfBullets + " more bullets!");
+                GameManager.addBullets(numberOfBullets);
+                GameManager.setCurrentMessage("You got " + numberOfBullets + " more bullets!");
             }
             case POINTS -> {
-                gm.addScore(100);
-                gm.setCurrentMessage("You got " + 100 + " extra points!");
+                GameManager.addScore(100);
+                GameManager.setCurrentMessage("You got " + 100 + " extra points!");
             }
         }
     }

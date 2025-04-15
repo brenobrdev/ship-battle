@@ -14,15 +14,15 @@ public class Ship implements Hittable {
     }
 
     @Override
-    public void hit(GameManager gm) {
+    public void hit() {
         hitPoints--;
         if (isDestroyed()) {
-            gm.getGrid().destroyOneShip();
-            gm.setCurrentMessage("You destroyed a ship! Only " + gm.getGrid().getShipsAlive() + " ships remaining. \n+50 points");
-            gm.addScore(50);
+            GameManager.getGrid().destroyOneShip();
+            GameManager.setCurrentMessage("You destroyed a ship! Only " + GameManager.getGrid().getShipsAlive() + " ships remaining. \n+50 points");
+            GameManager.addScore(50);
         } else {
-            gm.setCurrentMessage("+10 points");
-            gm.addScore(10);
+            GameManager.setCurrentMessage("+10 points");
+            GameManager.addScore(10);
         }
     }
 }

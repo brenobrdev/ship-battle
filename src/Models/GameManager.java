@@ -1,52 +1,48 @@
 package Models;
 
 public class GameManager {
-    private int score;
-    private int bullets = 7;
-    private Grid grid;
-    private String currentMessage = "";
+    private static int score;
+    private static int bullets = 50;
+    private static Grid grid;
+    private static String currentMessage = "";
 
-    public GameManager() {
-        startNewGrid();
-    }
-
-    public int getScore() {
+    public static int getScore() {
         return score;
     }
 
-    public void addScore(int amount) {
+    public static void addScore(int amount) {
         score += amount;
     }
 
-    public int getBullets() {
+    public static int getBullets() {
         return bullets;
     }
 
-    public void useBullet() {
+    public static void useBullet() {
         bullets--;
     }
 
-    public void addBullets(int amount) {
+    public static void addBullets(int amount) {
         bullets += amount;
     }
 
-    public Grid getGrid() {
+    public static Grid getGrid() {
         return grid;
     }
 
-    public void startNewGrid() {
-        this.grid = new Grid();
+    public static void startNewGrid() {
+        grid = new Grid();
     }
 
-    public String getCurrentMessage() {
+    public static String getCurrentMessage() {
         return currentMessage;
     }
 
-    public void setCurrentMessage(String currentMessage) {
-        this.currentMessage = currentMessage;
+    public static void setCurrentMessage(String newMessage) {
+        currentMessage = newMessage;
     }
 
-    public void clearCurrentMessage() {
+    public static void clearCurrentMessage() {
         setCurrentMessage("");
     }
 }
