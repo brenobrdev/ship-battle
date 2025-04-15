@@ -2,7 +2,7 @@ package Models;
 
 import Enumerations.CellType;
 import Interfaces.Displayable;
-import Interfaces.Consumable;
+import Interfaces.Hittable;
 import Utilities.Constants;
 
 public class Cell implements Displayable {
@@ -16,7 +16,7 @@ public class Cell implements Displayable {
 
     private CellType type = CellType.EMPTY;
     private boolean isRevealed = false;
-    private Consumable content;
+    private Hittable content;
 
     public Cell(int x, int y) {
         this.position = new Vector2(x, y);
@@ -70,14 +70,15 @@ public class Cell implements Displayable {
         isRevealed = true;
     }
 
-    public void setContent(Consumable content) {
+    public void setContent(Hittable content) {
         this.content = content;
     }
 
     public void processHit(GameManager gm) {
         if (content != null) {
-            content.consume(gm);
+            content.hit(gm);
             content = null;
-        }
+        } else
+            gm.setCurrentMessage("This has already been destroyed... now there is only shambles and you wasted a bullet");
     }
 }

@@ -1,17 +1,17 @@
 package Models;
 
 import Enumerations.LootType;
-import Interfaces.Consumable;
+import Interfaces.Hittable;
 import Utilities.Randomizer;
 
-public class Loot implements Consumable {
+public class Loot implements Hittable {
     private LootType type;
 
     public Loot(LootType type) {
         this.type = type;
     }
 
-    public void consume(GameManager gm) {
+    public void hit(GameManager gm) {
         switch (type) {
             case BULLET -> {
                 int numberOfBullets = Randomizer.getRandomIntBetween(3, 8);

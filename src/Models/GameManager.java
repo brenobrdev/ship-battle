@@ -2,7 +2,7 @@ package Models;
 
 public class GameManager {
     private int score;
-    private int bullets = 3;
+    private int bullets = 7;
     private Grid grid;
     private String currentMessage = "";
 
@@ -44,5 +44,9 @@ public class GameManager {
 
     public void setCurrentMessage(String currentMessage) {
         this.currentMessage = currentMessage;
+    }
+
+    public void clearCurrentMessage() {
+        setCurrentMessage("");
     }
 }

@@ -1,21 +1,28 @@
 package Models;
 
-import java.util.List;
-import java.util.Set;
-import java.util.HashSet;
+import Interfaces.Hittable;
 
-public class Ship {
-    private final Set<Vector2> coordinates = new HashSet<>();
+public class Ship implements Hittable {
+    private int hitPoints;
 
-    public Ship(List<Vector2> coordinates) {
-        this.coordinates.addAll(coordinates);
+    public Ship( int hitPoints) {
+        this.hitPoints = hitPoints;
     }
 
-    public boolean checkHit(Vector2 coordinate) {
-        return coordinates.remove(coordinate);
+    public boolean isDestroyed() {
+        return hitPoints <= 0;
     }
 
-    public boolean isAlive() {
-        return !coordinates.isEmpty();
+    @Override
+    public void hit(GameManager gm) {
+        hitPoints--;
+        if (isDestroyed()) {
+            gm.getGrid().destroyOneShip();
+            gm.setCurrentMessage("You destroyed a ship! Only " + gm.getGrid().getShipsAlive() + " ships remaining. \n+50 points");
+            gm.addScore(50);
+        } else {
+            gm.setCurrentMessage("+10 points");
+            gm.addScore(10);
+        }
     }
 }

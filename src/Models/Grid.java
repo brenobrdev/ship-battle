@@ -11,15 +11,12 @@ import java.util.List;
 
 public class Grid implements Displayable {
     private final Cell[][] cells = new Cell[Constants.GRID_AREA][Constants.GRID_AREA];
-    private final List<Ship> ships = new ArrayList<>();
+    private int shipsAlive = 0;
     private final GameManager gm;
 
     public Grid(GameManager gm) {
         populateCells();
-        createShip();
-        createShip();
-        createShip();
-        createShip();
+        createShip(4);
         createLoot(3);
         this.gm = gm;
     }
@@ -31,6 +28,18 @@ public class Grid implements Displayable {
                 cells[row][column].display();
             }
         }
+    }
+
+    public int getShipsAlive() {
+        return shipsAlive;
+    }
+
+    public boolean hasShipsAlive() {
+        return this.shipsAlive > 0;
+    }
+
+    public void destroyOneShip() {
+        shipsAlive--;
     }
 
     private void populateCells() {
@@ -57,10 +66,6 @@ public class Grid implements Displayable {
         return getCell(coordinates.getX(), coordinates.getY());
     }
 
-    public boolean hasShipsAlive() {
-        return !ships.isEmpty();
-    }
-
     public void createLoot(int count) {
         for (int i = 0; i < count; i++) {
             Cell cell = getEmptyCell();
@@ -69,27 +74,20 @@ public class Grid implements Displayable {
         }
     }
 
-    public void createShip() {
-        int length = Randomizer.getRandomShipLength();
-        List<Vector2> randomCoordinates = Randomizer.getRandomConsecutiveCellCoordinates(length);
-        boolean areAllCoordinatesEmptyCells = true;
+    public void createShip(int count) {
+        for (int i = 0; i < count; i++) {
+            int length = Randomizer.getRandomShipLength();
 
-        for (Vector2 coordinate : randomCoordinates) {
-            Cell cell = getCell(coordinate);
+            List<Cell> consecutiveEmptyCells = getConsecutiveEmptyCells(length);
 
-            if (!cell.isEmpty()) {
-                areAllCoordinatesEmptyCells = false;
-                createShip();
-            }
-        }
+            Ship ship = new Ship(length);
 
-        if (areAllCoordinatesEmptyCells) {
-            for (Vector2 coordinate : randomCoordinates) {
-                Cell freeCell = getCell(coordinate);
-                cells[freeCell.getPosition().getX()][freeCell.getPosition().getY()].setType(CellType.SHIP);
+            for (Cell emptyCell : consecutiveEmptyCells) {
+                emptyCell.setContent(ship);
+                cells[emptyCell.getPosition().getX()][emptyCell.getPosition().getY()].setType(CellType.SHIP);
             }
 
-            ships.add(new Ship(randomCoordinates));
+            shipsAlive++;
         }
     }
 
@@ -100,19 +98,7 @@ public class Grid implements Displayable {
         switch (target.getType()) {
             case EMPTY -> gm.setCurrentMessage("Water...");
             case LOOT -> target.processHit(gm);
-            case SHIP -> ships.stream()
-                                .filter(ship -> ship.checkHit(target.getPosition()))
-                                .findFirst()
-                                .ifPresent(ship -> {
-                                    if (!ship.isAlive()) {
-                                        ships.remove(ship);
-                                        gm.setCurrentMessage("You destroyed a ship! Only " + (ships.size()) + " remaining!\n+50 points");
-                                        gm.addScore(50);
-                                    } else {
-                                        gm.setCurrentMessage("+10 points");
-                                        gm.addScore(10);
-                                    }
-                                });
+            case SHIP -> target.processHit(gm);
         }
     }
 
@@ -122,6 +108,28 @@ public class Grid implements Displayable {
             if (potentialCell.isEmpty()) {
                 return potentialCell;
             }
+        }
+    }
+
+    public List<Cell> getConsecutiveEmptyCells(int count) {
+        List<Cell> consecutiveEmptyCells = new ArrayList<>();
+
+        while (true) {
+            List<Vector2> randomCoordinates = Randomizer.getRandomConsecutiveCellCoordinates(count);
+
+            for (Vector2 coordinate : randomCoordinates) {
+                Cell cell = getCell(coordinate);
+
+                if (!cell.isEmpty())
+                    break;
+                else
+                    consecutiveEmptyCells.add(cell);
+            }
+
+            if (randomCoordinates.size() != consecutiveEmptyCells.size())
+                consecutiveEmptyCells.clear();
+            else
+                return consecutiveEmptyCells;
         }
     }
 }

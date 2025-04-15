@@ -18,6 +18,7 @@ public class Main {
             gm.getGrid().display();
 
             System.out.println(gm.getCurrentMessage());
+            gm.clearCurrentMessage();
             System.out.println("Pick a cell to shoot:");
 
             Vector2 coordinates = Input.parse(input.next().trim().toUpperCase());
