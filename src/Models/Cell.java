@@ -6,16 +6,15 @@ import Interfaces.Hittable;
 import Utilities.Constants;
 
 public class Cell implements Displayable {
-    final String PREFIX = "  ";
-    final boolean IS_HORIZONTAL_HEADER;
-    final boolean IS_VERTICAL_HEADER;
-    final boolean IS_AFTER_COLUMN_9;
-    final boolean IS_LAST_COLUMN;
+    private final boolean IS_HORIZONTAL_HEADER;
+    private final boolean IS_VERTICAL_HEADER;
+    private final boolean IS_AFTER_COLUMN_9;
+    private final boolean IS_LAST_COLUMN;
 
     private final Vector2 position;
 
-    private CellType type = CellType.EMPTY;
     private boolean isRevealed = false;
+    private CellType type = CellType.EMPTY;
     private Hittable content;
 
     public Cell(int x, int y) {
@@ -28,6 +27,7 @@ public class Cell implements Displayable {
 
     @Override
     public void display() {
+        String PREFIX = "  ";
         String suffix = PREFIX;
 
         if (IS_AFTER_COLUMN_9 && IS_HORIZONTAL_HEADER)
@@ -75,10 +75,15 @@ public class Cell implements Displayable {
     }
 
     public void processHit(GameManager gm) {
+        reveal();
+        gm.useBullet();
+
         if (content != null) {
             content.hit(gm);
             content = null;
-        } else
-            gm.setCurrentMessage("This has already been destroyed... now there is only shambles and you wasted a bullet");
+        } else if (getType() == CellType.EMPTY)
+            gm.setCurrentMessage("Water...");
+        else
+            gm.setCurrentMessage("This has already been destroyed... now there is only shambles...");
     }
 }

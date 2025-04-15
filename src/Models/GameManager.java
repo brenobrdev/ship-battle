@@ -35,7 +35,7 @@ public class GameManager {
     }
 
     public void startNewGrid() {
-        this.grid = new Grid(this);
+        this.grid = new Grid();
     }
 
     public String getCurrentMessage() {

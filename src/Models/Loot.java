@@ -5,7 +5,7 @@ import Interfaces.Hittable;
 import Utilities.Randomizer;
 
 public class Loot implements Hittable {
-    private LootType type;
+    private final LootType type;
 
     public Loot(LootType type) {
         this.type = type;

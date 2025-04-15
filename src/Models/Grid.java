@@ -11,14 +11,13 @@ import java.util.List;
 
 public class Grid implements Displayable {
     private final Cell[][] cells = new Cell[Constants.GRID_AREA][Constants.GRID_AREA];
-    private int shipsAlive = 0;
-    private final GameManager gm;
 
-    public Grid(GameManager gm) {
+    private int shipsAlive = 0;
+
+    public Grid() {
         populateCells();
         createShip(4);
         createLoot(3);
-        this.gm = gm;
     }
 
     @Override
@@ -42,11 +41,15 @@ public class Grid implements Displayable {
         shipsAlive--;
     }
 
+    public Cell getCell(Vector2 coordinates) {
+        return getCell(coordinates.getX(), coordinates.getY());
+    }
+
     private void populateCells() {
         for (int row = 0; row < Constants.GRID_AREA; row++) {
             for (int column = 0; column < Constants.GRID_AREA; column++) {
                 Cell cell = new Cell(row, column);
-
+                cell.reveal();
                 if (row == 0 || column == 0)
                     cell.reveal(); // Reveals the cell if it's a header
                 cells[row][column] = cell;
@@ -62,11 +65,7 @@ public class Grid implements Displayable {
         return null;
     }
 
-    public Cell getCell(Vector2 coordinates) {
-        return getCell(coordinates.getX(), coordinates.getY());
-    }
-
-    public void createLoot(int count) {
+    private void createLoot(int count) {
         for (int i = 0; i < count; i++) {
             Cell cell = getEmptyCell();
             cell.setType(CellType.LOOT);
@@ -74,7 +73,7 @@ public class Grid implements Displayable {
         }
     }
 
-    public void createShip(int count) {
+    private void createShip(int count) {
         for (int i = 0; i < count; i++) {
             int length = Randomizer.getRandomShipLength();
 
@@ -91,18 +90,7 @@ public class Grid implements Displayable {
         }
     }
 
-    public void checkHit(Cell target) {
-        target.reveal();
-        gm.useBullet();
-
-        switch (target.getType()) {
-            case EMPTY -> gm.setCurrentMessage("Water...");
-            case LOOT -> target.processHit(gm);
-            case SHIP -> target.processHit(gm);
-        }
-    }
-
-    public Cell getEmptyCell() {
+    private Cell getEmptyCell() {
         while (true) {
             Cell potentialCell = getCell(Randomizer.getRandomCoordinates());
             if (potentialCell.isEmpty()) {
@@ -111,7 +99,7 @@ public class Grid implements Displayable {
         }
     }
 
-    public List<Cell> getConsecutiveEmptyCells(int count) {
+    private List<Cell> getConsecutiveEmptyCells(int count) {
         List<Cell> consecutiveEmptyCells = new ArrayList<>();
 
         while (true) {

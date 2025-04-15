@@ -9,7 +9,7 @@ public class Main {
     public static void main (String[] args) {
         GameManager gm = new GameManager();
         Scanner input = new Scanner(System.in);
-        Cell selectedCell = null;
+        Cell selectedCell;
         Input.clearScreen();
 
         while (gm.getBullets() > 0) {
@@ -34,7 +34,8 @@ public class Main {
                 continue;
             }
 
-            gm.getGrid().checkHit(selectedCell);
+            selectedCell.processHit(gm);
+
             if (!gm.getGrid().hasShipsAlive()) {
                 gm.startNewGrid();
             }
